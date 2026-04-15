@@ -1,0 +1,25 @@
+schema_version: 1
+name: xpad-launchpad
+version: "0.1.0"
+description: "Launch, trade, and participate in xpad.lol bonding-curve tokens and presales on X Layer (OKX L2) with automatic Uniswap V2 graduation."
+author:
+  name: xpad.lol
+  github: xpaddotlol
+license: MIT
+category: defi-protocol
+tags:
+  - bonding-curve
+  - launchpad
+  - presale
+  - x-layer
+  - uniswap-v2
+  - xpad
+  - fair-launch
+  - okx
+  - defi
+components:
+  skill:
+    dir: "."
+api_calls:
+  - rpc.xlayer.tech
+  - www.oklink.com

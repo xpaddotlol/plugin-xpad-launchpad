@@ -1,0 +1,674 @@
+[
+  {
+    "inputs": [
+      {
+        "components": [
+          {
+            "name": "token",
+            "type": "address"
+          },
+          {
+            "name": "uniswapRouter",
+            "type": "address"
+          },
+          {
+            "name": "uniswapFactory",
+            "type": "address"
+          },
+          {
+            "name": "totalSupply",
+            "type": "uint256"
+          },
+          {
+            "name": "treasury",
+            "type": "address"
+          },
+          {
+            "name": "partnerTreasury",
+            "type": "address"
+          },
+          {
+            "name": "devLock",
+            "type": "uint256"
+          },
+          {
+            "name": "devAddress",
+            "type": "address"
+          },
+          {
+            "name": "isHypedLaunch",
+            "type": "bool"
+          }
+        ],
+        "name": "config",
+        "type": "tuple"
+      }
+    ],
+    "stateMutability": "nonpayable",
+    "type": "constructor"
+  },
+  {
+    "inputs": [],
+    "name": "AdjustmentExceedsReserves",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "AlreadyGraduated",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "CannotWithdrawBondingToken",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "DevPurchaseAlreadyDone",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "DevTokensLocked",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "ETHRefundFailed",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "InsufficientBalance",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "InsufficientETHForAdjustment",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "InsufficientTokenBalance",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "InsufficientTokens",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "InvalidTotalSupply",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "NoETHBalance",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "NoTokens",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "NotDevAddress",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "NotGraduated",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "OnlyFactory",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "SlippageError",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "SniperBlocked",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "TokensLocked",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "TransactionTooLarge",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "TransferFailed",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "ZeroAddress",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "ZeroValue",
+    "type": "error"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": true,
+        "name": "lpPool",
+        "type": "address"
+      },
+      {
+        "indexed": false,
+        "name": "liquidityAdded",
+        "type": "uint256"
+      },
+      {
+        "indexed": true,
+        "name": "token",
+        "type": "address"
+      }
+    ],
+    "name": "BondingGraduated",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": true,
+        "name": "devAddress",
+        "type": "address"
+      },
+      {
+        "indexed": false,
+        "name": "amount",
+        "type": "uint256"
+      }
+    ],
+    "name": "DevTokensClaimed",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": true,
+        "name": "lpPool",
+        "type": "address"
+      },
+      {
+        "indexed": false,
+        "name": "liquidityAmount",
+        "type": "uint256"
+      },
+      {
+        "indexed": false,
+        "name": "tokenAmount",
+        "type": "uint256"
+      },
+      {
+        "indexed": false,
+        "name": "ethAmount",
+        "type": "uint256"
+      }
+    ],
+    "name": "LiquidityAdded",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": true,
+        "name": "previousOwner",
+        "type": "address"
+      },
+      {
+        "indexed": true,
+        "name": "newOwner",
+        "type": "address"
+      }
+    ],
+    "name": "OwnershipTransferred",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": true,
+        "name": "pair",
+        "type": "address"
+      },
+      {
+        "indexed": false,
+        "name": "tokensAdjusted",
+        "type": "uint256"
+      },
+      {
+        "indexed": false,
+        "name": "ethAdjusted",
+        "type": "uint256"
+      }
+    ],
+    "name": "ReservesAdjustedForLiquidity",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": true,
+        "name": "tokenAddress",
+        "type": "address"
+      },
+      {
+        "indexed": false,
+        "name": "amount",
+        "type": "uint256"
+      },
+      {
+        "indexed": true,
+        "name": "recipient",
+        "type": "address"
+      }
+    ],
+    "name": "SkimmedAssetsWithdrawn",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": true,
+        "name": "token",
+        "type": "address"
+      },
+      {
+        "indexed": true,
+        "name": "bondingCurve",
+        "type": "address"
+      },
+      {
+        "indexed": false,
+        "name": "trader",
+        "type": "address"
+      },
+      {
+        "indexed": false,
+        "name": "ethAmount",
+        "type": "uint256"
+      },
+      {
+        "indexed": false,
+        "name": "tokenAmount",
+        "type": "uint256"
+      },
+      {
+        "indexed": false,
+        "name": "isBuy",
+        "type": "bool"
+      },
+      {
+        "indexed": false,
+        "name": "currentEthReserves",
+        "type": "uint256"
+      },
+      {
+        "indexed": false,
+        "name": "currentTokenReserves",
+        "type": "uint256"
+      },
+      {
+        "indexed": false,
+        "name": "isGraduated",
+        "type": "bool"
+      }
+    ],
+    "name": "TokenSwap",
+    "type": "event"
+  },
+  {
+    "inputs": [],
+    "name": "DEAD_ADDRESS",
+    "outputs": [
+      {
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "MAX_HYPED_TX_VALUE",
+    "outputs": [
+      {
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "name": "minTokensOut",
+        "type": "uint256"
+      }
+    ],
+    "name": "buyTokens",
+    "outputs": [
+      {
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "payable",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "claimDevTokens",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "creationBlock",
+    "outputs": [
+      {
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "name": "minTokensOut",
+        "type": "uint256"
+      }
+    ],
+    "name": "factoryDevBuy",
+    "outputs": [
+      {
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "payable",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "getCurrentPrice",
+    "outputs": [
+      {
+        "name": "price",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "getDevLockInfo",
+    "outputs": [
+      {
+        "name": "isLocked",
+        "type": "bool"
+      },
+      {
+        "name": "lockEndTime",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "getDevPooledTokens",
+    "outputs": [
+      {
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "isHypedLaunch",
+    "outputs": [
+      {
+        "name": "",
+        "type": "bool"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "owner",
+    "outputs": [
+      {
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "partnerTreasuryAddress",
+    "outputs": [
+      {
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "name": "ethIn",
+        "type": "uint256"
+      }
+    ],
+    "name": "previewBuyTokens",
+    "outputs": [
+      {
+        "name": "tokensOut",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "name": "tokenAmount",
+        "type": "uint256"
+      }
+    ],
+    "name": "previewSellTokens",
+    "outputs": [
+      {
+        "name": "netEthOut",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "renounceOwnership",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "name": "tokenAmount",
+        "type": "uint256"
+      },
+      {
+        "name": "minEthOut",
+        "type": "uint256"
+      }
+    ],
+    "name": "sellTokens",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "token",
+    "outputs": [
+      {
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "tokenData",
+    "outputs": [
+      {
+        "name": "virtualReserve",
+        "type": "uint256"
+      },
+      {
+        "name": "actualReserve",
+        "type": "uint256"
+      },
+      {
+        "name": "availableSupply",
+        "type": "uint256"
+      },
+      {
+        "name": "lpReserve",
+        "type": "uint256"
+      },
+      {
+        "name": "devPooledTokens",
+        "type": "uint256"
+      },
+      {
+        "name": "graduated",
+        "type": "bool"
+      },
+      {
+        "name": "devLockUntil",
+        "type": "uint256"
+      },
+      {
+        "name": "lpPool",
+        "type": "address"
+      },
+      {
+        "name": "devAddress",
+        "type": "address"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "name": "newOwner",
+        "type": "address"
+      }
+    ],
+    "name": "transferOwnership",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "treasuryAddress",
+    "outputs": [
+      {
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "uniswapFactory",
+    "outputs": [
+      {
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "uniswapRouter",
+    "outputs": [
+      {
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "name": "tokenAddress",
+        "type": "address"
+      }
+    ],
+    "name": "withdrawSkimmedAssets",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "stateMutability": "payable",
+    "type": "receive"
+  }
+]

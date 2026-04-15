@@ -1,0 +1,23 @@
+{
+  "chainId": 196,
+  "network": "x-layer",
+  "rpcUrl": "https://rpc.xlayer.tech",
+  "explorer": "https://www.oklink.com/x-layer",
+  "nativeToken": "OKB",
+  "wrappedNative": "0xe538905cf8410324e03A5A23C1c177a474D59b2b",
+  "dex": {
+    "uniswapV2": {
+      "name": "Uniswap V2 (canonical)",
+      "description": "Canonical Uniswap Labs V2 on X Layer. xpad.lol bonding curves graduate directly here.",
+      "factory": "0xDf38F24fE153761634Be942F9d859f3DBA857E95",
+      "router": "0x182a927119D56008d921126764bF884221b10f59",
+      "swapFeeBps": 30,
+      "amountsOutMultiplier": "9970/10000"
+    }
+  },
+  "multicall3": "0xa6a35502f665c413C02ee54fD5D757015e7c16B1",
+  "xpad": {
+    "bondingFactory": "0x70265A5056e7E385111087418E855Ce5299b4a64",
+    "icoFactory": "0x7aBff0D199CEaB4E7F08E210D0c64EdCAB37a3Bd",
+  }
+}

@@ -1,0 +1,1543 @@
+[
+  {
+    "inputs": [],
+    "stateMutability": "nonpayable",
+    "type": "constructor"
+  },
+  {
+    "inputs": [
+      {
+        "name": "allocationType",
+        "type": "string"
+      }
+    ],
+    "name": "ICOContract__AllocationPercentTooHigh",
+    "type": "error"
+  },
+  {
+    "inputs": [
+      {
+        "name": "reason",
+        "type": "string"
+      }
+    ],
+    "name": "ICOContract__BalanceError",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "ICOContract__ContributionTooLarge",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "ICOContract__ContributionTooSmall",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "ICOContract__CreatorTokensAlreadyClaimed",
+    "type": "error"
+  },
+  {
+    "inputs": [
+      {
+        "name": "reason",
+        "type": "string"
+      }
+    ],
+    "name": "ICOContract__InvalidAmount",
+    "type": "error"
+  },
+  {
+    "inputs": [
+      {
+        "name": "beneficiary",
+        "type": "address"
+      },
+      {
+        "name": "attemptedType",
+        "type": "uint8"
+      }
+    ],
+    "name": "ICOContract__InvalidClaimType",
+    "type": "error"
+  },
+  {
+    "inputs": [
+      {
+        "name": "reason",
+        "type": "string"
+      }
+    ],
+    "name": "ICOContract__InvalidInput",
+    "type": "error"
+  },
+  {
+    "inputs": [
+      {
+        "name": "requiredState",
+        "type": "uint8"
+      }
+    ],
+    "name": "ICOContract__InvalidState",
+    "type": "error"
+  },
+  {
+    "inputs": [
+      {
+        "name": "account",
+        "type": "address"
+      }
+    ],
+    "name": "ICOContract__NotWhitelisted",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "ICOContract__NothingToClaim",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "ICOContract__NothingToReclaim",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "ICOContract__NothingToRefund",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "ICOContract__OnlyCreator",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "ICOContract__OnlyFactory",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "ICOContract__OnlyTreasury",
+    "type": "error"
+  },
+  {
+    "inputs": [
+      {
+        "name": "reason",
+        "type": "string"
+      }
+    ],
+    "name": "ICOContract__PaymentFailed",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "ICOContract__RefundFailed",
+    "type": "error"
+  },
+  {
+    "inputs": [
+      {
+        "name": "reason",
+        "type": "string"
+      }
+    ],
+    "name": "ICOContract__TimeError",
+    "type": "error"
+  },
+  {
+    "inputs": [
+      {
+        "name": "reason",
+        "type": "string"
+      }
+    ],
+    "name": "ICOContract__TransferFailed",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "ICOContract__TreasuryFeesNotPaid",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "ICOContract__WhitelistActive",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "ICOContract__WhitelistNotActive",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "InvalidInitialization",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "NotInitializing",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "ReentrancyGuardReentrantCall",
+    "type": "error"
+  },
+  {
+    "inputs": [
+      {
+        "name": "token",
+        "type": "address"
+      }
+    ],
+    "name": "SafeERC20FailedOperation",
+    "type": "error"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": true,
+        "name": "beneficiary",
+        "type": "address"
+      },
+      {
+        "indexed": false,
+        "name": "amountClaimed",
+        "type": "uint256"
+      }
+    ],
+    "name": "Claimed",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": true,
+        "name": "contributor",
+        "type": "address"
+      },
+      {
+        "indexed": false,
+        "name": "amountPaid",
+        "type": "uint256"
+      },
+      {
+        "indexed": false,
+        "name": "tokensAllocated",
+        "type": "uint256"
+      }
+    ],
+    "name": "Contribution",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": true,
+        "name": "creator",
+        "type": "address"
+      },
+      {
+        "indexed": false,
+        "name": "amountClaimed",
+        "type": "uint256"
+      },
+      {
+        "indexed": false,
+        "name": "totalReleased",
+        "type": "uint256"
+      },
+      {
+        "indexed": false,
+        "name": "totalShare",
+        "type": "uint256"
+      }
+    ],
+    "name": "CreatorTokensClaimed",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": true,
+        "name": "contributor",
+        "type": "address"
+      },
+      {
+        "indexed": false,
+        "name": "intended",
+        "type": "uint256"
+      },
+      {
+        "indexed": false,
+        "name": "actual",
+        "type": "uint256"
+      },
+      {
+        "indexed": false,
+        "name": "fee",
+        "type": "uint256"
+      }
+    ],
+    "name": "FeeOnTransferDetected",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": false,
+        "name": "newState",
+        "type": "uint8"
+      }
+    ],
+    "name": "ICOStateChanged",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": false,
+        "name": "version",
+        "type": "uint64"
+      }
+    ],
+    "name": "Initialized",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": true,
+        "name": "treasury",
+        "type": "address"
+      },
+      {
+        "indexed": false,
+        "name": "feeAmount",
+        "type": "uint256"
+      }
+    ],
+    "name": "PartnerTreasuryFundingFeePaid",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": true,
+        "name": "recipient",
+        "type": "address"
+      },
+      {
+        "indexed": false,
+        "name": "amountClaimed",
+        "type": "uint256"
+      }
+    ],
+    "name": "PreAllocatedFundingClaimed",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": true,
+        "name": "recipient",
+        "type": "address"
+      },
+      {
+        "indexed": false,
+        "name": "amountClaimed",
+        "type": "uint256"
+      },
+      {
+        "indexed": false,
+        "name": "totalReleased",
+        "type": "uint256"
+      },
+      {
+        "indexed": false,
+        "name": "totalAllocation",
+        "type": "uint256"
+      }
+    ],
+    "name": "PreAllocatedTokensClaimed",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": true,
+        "name": "contributor",
+        "type": "address"
+      },
+      {
+        "indexed": false,
+        "name": "amountRefunded",
+        "type": "uint256"
+      }
+    ],
+    "name": "Refunded",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": true,
+        "name": "creator",
+        "type": "address"
+      },
+      {
+        "indexed": false,
+        "name": "amountReclaimed",
+        "type": "uint256"
+      }
+    ],
+    "name": "TokensReclaimedOnFailure",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": true,
+        "name": "treasury",
+        "type": "address"
+      },
+      {
+        "indexed": false,
+        "name": "feeAmount",
+        "type": "uint256"
+      }
+    ],
+    "name": "TreasuryFundingFeePaid",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [],
+    "name": "WhitelistActivated",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [],
+    "name": "WhitelistDeactivated",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": true,
+        "name": "account",
+        "type": "address"
+      }
+    ],
+    "name": "WhitelistedAddressAdded",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": true,
+        "name": "account",
+        "type": "address"
+      }
+    ],
+    "name": "WhitelistedAddressRemoved",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": false,
+        "name": "accounts",
+        "type": "address[]"
+      }
+    ],
+    "name": "WhitelistedAddressesAdded",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": false,
+        "name": "accounts",
+        "type": "address[]"
+      }
+    ],
+    "name": "WhitelistedAddressesRemoved",
+    "type": "event"
+  },
+  {
+    "inputs": [],
+    "name": "activate",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "activateWhitelist",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "name": "_accounts",
+        "type": "address[]"
+      }
+    ],
+    "name": "addManyToWhitelist",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "name": "_account",
+        "type": "address"
+      }
+    ],
+    "name": "addToWhitelist",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "bannerCid",
+    "outputs": [
+      {
+        "name": "",
+        "type": "string"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "claimPreAllocatedFunding",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "name": "_claimType",
+        "type": "uint8"
+      }
+    ],
+    "name": "claimTokens",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "name": "claimedFundingAllocations",
+    "outputs": [
+      {
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "name": "_amount",
+        "type": "uint256"
+      },
+      {
+        "name": "_isNative",
+        "type": "bool"
+      }
+    ],
+    "name": "contribute",
+    "outputs": [],
+    "stateMutability": "payable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "name": "contributions",
+    "outputs": [
+      {
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "name": "contributorTokensClaimed",
+    "outputs": [
+      {
+        "name": "",
+        "type": "bool"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "creator",
+    "outputs": [
+      {
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "creatorTokensClaimed",
+    "outputs": [
+      {
+        "name": "",
+        "type": "bool"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "name": "creatorTokensReleased",
+    "outputs": [
+      {
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "currentState",
+    "outputs": [
+      {
+        "name": "",
+        "type": "uint8"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "deactivateWhitelist",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "discord",
+    "outputs": [
+      {
+        "name": "",
+        "type": "string"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "docs",
+    "outputs": [
+      {
+        "name": "",
+        "type": "string"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "endTime",
+    "outputs": [
+      {
+        "name": "",
+        "type": "uint64"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "factory",
+    "outputs": [
+      {
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "finalize",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "fullDescription",
+    "outputs": [
+      {
+        "name": "",
+        "type": "string"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "name": "fundingAllocationPercentages",
+    "outputs": [
+      {
+        "name": "",
+        "type": "uint16"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "fundraisingCurrency",
+    "outputs": [
+      {
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "name": "_beneficiary",
+        "type": "address"
+      }
+    ],
+    "name": "getClaimableAmount",
+    "outputs": [
+      {
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "getRemainingTokens",
+    "outputs": [
+      {
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "getStartTime",
+    "outputs": [
+      {
+        "name": "",
+        "type": "uint64"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "getState",
+    "outputs": [
+      {
+        "name": "",
+        "type": "uint8"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "getTokenSoldAddress",
+    "outputs": [
+      {
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "getTotalTokensForSale",
+    "outputs": [
+      {
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "name": "beneficiary",
+        "type": "address"
+      }
+    ],
+    "name": "getVestingStatus",
+    "outputs": [
+      {
+        "name": "totalAllocation",
+        "type": "uint256"
+      },
+      {
+        "name": "totalVested",
+        "type": "uint256"
+      },
+      {
+        "name": "totalReleased",
+        "type": "uint256"
+      },
+      {
+        "name": "claimableNow",
+        "type": "uint256"
+      },
+      {
+        "name": "vestingEnabledFlag",
+        "type": "bool"
+      },
+      {
+        "name": "vestingStartTimestamp",
+        "type": "uint64"
+      },
+      {
+        "name": "vestingCliffEndTimestamp",
+        "type": "uint64"
+      },
+      {
+        "name": "vestingEndTimestamp",
+        "type": "uint64"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "hardCap",
+    "outputs": [
+      {
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "components": [
+          {
+            "name": "tokenName",
+            "type": "string"
+          },
+          {
+            "name": "tokenSymbol",
+            "type": "string"
+          },
+          {
+            "name": "tokenTotalSupply",
+            "type": "uint256"
+          },
+          {
+            "name": "fundraisingCurrency",
+            "type": "address"
+          },
+          {
+            "name": "softCap",
+            "type": "uint256"
+          },
+          {
+            "name": "hardCap",
+            "type": "uint256"
+          },
+          {
+            "name": "startTime",
+            "type": "uint64"
+          },
+          {
+            "name": "endTime",
+            "type": "uint64"
+          },
+          {
+            "name": "minContribution",
+            "type": "uint256"
+          },
+          {
+            "name": "maxContribution",
+            "type": "uint256"
+          },
+          {
+            "components": [
+              {
+                "name": "recipient",
+                "type": "address"
+              },
+              {
+                "name": "percentageBps",
+                "type": "uint16"
+              },
+              {
+                "name": "vestingEnabled",
+                "type": "bool"
+              },
+              {
+                "name": "label",
+                "type": "string"
+              }
+            ],
+            "name": "tokenPreAllocations",
+            "type": "tuple[]"
+          },
+          {
+            "components": [
+              {
+                "name": "recipient",
+                "type": "address"
+              },
+              {
+                "name": "percentageBps",
+                "type": "uint16"
+              },
+              {
+                "name": "vestingEnabled",
+                "type": "bool"
+              },
+              {
+                "name": "label",
+                "type": "string"
+              }
+            ],
+            "name": "fundingCurrencyAllocations",
+            "type": "tuple[]"
+          },
+          {
+            "name": "vestingCliffDuration",
+            "type": "uint64"
+          },
+          {
+            "name": "vestingTotalDuration",
+            "type": "uint64"
+          },
+          {
+            "name": "vestingInitialUnlockBps",
+            "type": "uint16"
+          },
+          {
+            "name": "creatorVestingEnabled",
+            "type": "bool"
+          },
+          {
+            "components": [
+              {
+                "name": "shortDescription",
+                "type": "string"
+              },
+              {
+                "name": "fullDescription",
+                "type": "string"
+              },
+              {
+                "name": "twitter",
+                "type": "string"
+              },
+              {
+                "name": "telegram",
+                "type": "string"
+              },
+              {
+                "name": "website",
+                "type": "string"
+              },
+              {
+                "name": "discord",
+                "type": "string"
+              },
+              {
+                "name": "docs",
+                "type": "string"
+              },
+              {
+                "name": "logoCid",
+                "type": "string"
+              },
+              {
+                "name": "bannerCid",
+                "type": "string"
+              }
+            ],
+            "name": "links",
+            "type": "tuple"
+          },
+          {
+            "name": "initialWhitelistActive",
+            "type": "bool"
+          }
+        ],
+        "name": "_config",
+        "type": "tuple"
+      },
+      {
+        "name": "_creator",
+        "type": "address"
+      },
+      {
+        "name": "_factory",
+        "type": "address"
+      },
+      {
+        "name": "_newTokenAddress",
+        "type": "address"
+      },
+      {
+        "name": "_treasuryAddress",
+        "type": "address"
+      },
+      {
+        "name": "_partnerTreasuryAddress",
+        "type": "address"
+      },
+      {
+        "name": "_treasuryFundingFeeBps",
+        "type": "uint16"
+      },
+      {
+        "name": "_initialWhitelistActive",
+        "type": "bool"
+      },
+      {
+        "name": "_whitelistedAddresses",
+        "type": "address[]"
+      }
+    ],
+    "name": "initialize",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "name": "isWhitelisted",
+    "outputs": [
+      {
+        "name": "",
+        "type": "bool"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "logoCid",
+    "outputs": [
+      {
+        "name": "",
+        "type": "string"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "maxContribution",
+    "outputs": [
+      {
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "minContribution",
+    "outputs": [
+      {
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "partnerTreasuryAddress",
+    "outputs": [
+      {
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "name": "preAllocatedTokensReleased",
+    "outputs": [
+      {
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "reclaimTokensOnFailure",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "refund",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "name": "_account",
+        "type": "address"
+      }
+    ],
+    "name": "removeFromWhitelist",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "name": "_accounts",
+        "type": "address[]"
+      }
+    ],
+    "name": "removeManyFromWhitelist",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "shortDescription",
+    "outputs": [
+      {
+        "name": "",
+        "type": "string"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "softCap",
+    "outputs": [
+      {
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "startTime",
+    "outputs": [
+      {
+        "name": "",
+        "type": "uint64"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "telegram",
+    "outputs": [
+      {
+        "name": "",
+        "type": "string"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "name": "tokenAllocationAmounts",
+    "outputs": [
+      {
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "name": "tokenAllocations",
+    "outputs": [
+      {
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "tokenPrice",
+    "outputs": [
+      {
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "tokenSold",
+    "outputs": [
+      {
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "tokenTotalSupply",
+    "outputs": [
+      {
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "tokensAvailableForSale",
+    "outputs": [
+      {
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "totalExplicitFundingBps",
+    "outputs": [
+      {
+        "name": "",
+        "type": "uint16"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "totalRaised",
+    "outputs": [
+      {
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "totalTokensAllocated",
+    "outputs": [
+      {
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "totalTokensPreAllocated",
+    "outputs": [
+      {
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "treasuryAddress",
+    "outputs": [
+      {
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "treasuryFeesPaid",
+    "outputs": [
+      {
+        "name": "",
+        "type": "bool"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "treasuryFundingFeeBps",
+    "outputs": [
+      {
+        "name": "",
+        "type": "uint16"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "twitter",
+    "outputs": [
+      {
+        "name": "",
+        "type": "string"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "vestingCliffDuration",
+    "outputs": [
+      {
+        "name": "",
+        "type": "uint64"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "name": "vestingEnabled",
+    "outputs": [
+      {
+        "name": "",
+        "type": "bool"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "vestingInitialUnlockBps",
+    "outputs": [
+      {
+        "name": "",
+        "type": "uint16"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "vestingStartTime",
+    "outputs": [
+      {
+        "name": "",
+        "type": "uint64"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "vestingTotalDuration",
+    "outputs": [
+      {
+        "name": "",
+        "type": "uint64"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "website",
+    "outputs": [
+      {
+        "name": "",
+        "type": "string"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "whitelistActive",
+    "outputs": [
+      {
+        "name": "",
+        "type": "bool"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  }
+]

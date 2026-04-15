@@ -52,14 +52,6 @@ The private key never leaves OnchainOS. This skill will refuse any command that 
 
 ---
 
-## Companion agent
-
-A reference AI agent that uses this skill end-to-end — `agent-xpad-launch-hunter` — lives in a sibling repo. It demonstrates the full loop: discover → preview → buy → graduate → post-graduation Uniswap V2 swap.
-
-- Repo: `https://github.com/xpaddotlol/agent-xpad-launch-hunter`
-
----
-
 ## Install
 
 After this PR is merged into the [OKX plugin store](https://github.com/okx/plugin-store):

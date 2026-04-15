@@ -29,6 +29,30 @@ Reference material (ABIs + addresses) lives under `reference/` alongside this fi
 
 ---
 
+## Execution Model (read this first)
+
+**This is a skill-only plugin. There is no `xpad-launchpad` binary in your PATH.** The command headings below (`list-launches`, `check-curve`, `buy`, etc.) are **logical operation names**, not shell commands. **Do not** try `sh: xpad-launchpad list-launches` — that will fail with `command not found`.
+
+Instead, when the user asks you to run one of these operations:
+
+1. Find the matching command section in this file.
+2. Read its `**Calls:**` line(s) — that tells you the exact on-chain function to invoke.
+3. Use your own tools to execute:
+   - **Read calls (views):** `cast call`, `curl -X POST` against `https://rpc.xlayer.tech` (`eth_call`), or any JSON-RPC/viem client you have.
+   - **Write calls (state-changing):** route through the **OnchainOS Agentic Wallet** — never a raw key. Use the `onchainos` skill's transaction submission surface.
+4. Decode the return per the ABI in `reference/abi/`.
+5. Present the result to the user in plain English.
+
+Worked example — user says "run list-launches":
+```bash
+cast call 0x70265A5056e7E385111087418E855Ce5299b4a64 \
+  "getAllBondingCurves()(address[],uint256)" \
+  --rpc-url https://rpc.xlayer.tech
+```
+The returned tuple's second value is the count; the first is the array of curve addresses.
+
+---
+
 ## Pre-flight Checks
 
 Before invoking any command, confirm:

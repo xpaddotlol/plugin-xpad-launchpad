@@ -377,7 +377,7 @@ xpad-launchpad launch-token \
   --symbol "<1-6 alphanumeric chars>" \
   --description "<<=500 chars>" \
   --total-supply <wei, 100e18 <= x <= 1e33> \
-  --socials '<JSON: {"twitter":"...","telegram":"..."}>' \
+  --socials '<valid JSON string — see warning below>' \
   --image "<bare IPFS CID — e.g. bafy... or Qm...; no ipfs:// prefix, no URL>" \
   --user-salt <bytes32, must be unique per sender> \
   [--dev-purchase-okb 0] \
@@ -394,7 +394,7 @@ struct TokenParams {
     string  symbol;
     string  description;
     uint256 totalSupply;
-    string  socials;          // raw JSON string
+    string  socials;          // MUST be valid JSON — see warning below
     string  image;            // bare IPFS CID (no ipfs:// prefix, no URL); frontends prepend their preferred gateway
     uint256 devLockDuration;  // seconds; 0 = no lock
     uint256 devPurchaseETH;   // OKB units; 0 = no dev buy
@@ -410,6 +410,12 @@ struct TokenParams {
 - Symbol: 1–6 chars, `[A-Za-z0-9]` only (no space).
 - Total supply between `100 ether` and `1_000_000_000_000_000 ether`.
 - `userSalt` must not have been used by `msg.sender` before (`InvalidSalt` otherwise) — generate via `keccak256(abi.encode(timestamp, nonce))`.
+
+**CRITICAL — `socials` field must be valid JSON.** The contract concatenates `socials` and `image` into `metadataJSON` emitted in the `BondingSystemCreated` event. If `socials` is an empty string (`""`), the resulting JSON is malformed (`{"socials":,"image":"..."}`) — the token deploys on-chain but the xpad.lol frontend/indexer silently rejects the broken metadata and the token **never appears in the UI**. Always pass one of:
+- `"{}"` — safe empty object when the user has no socials
+- `'{"twitter":"https://x.com/...","telegram":"https://t.me/..."}'` — full links
+
+Never pass an empty string. Validate that `JSON.parse(socials)` succeeds before submitting.
 
 **Hyped-launch tradeoffs:** Locks every individual buy/sell <= `0.5 OKB` worth. Use only for fair-launch culture; otherwise keep `false`.
 

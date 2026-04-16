@@ -7,6 +7,10 @@ Built for the **OKX Build X AI Hackathon — Skills Arena** track.
 This plugin is a pure skill plugin: documentation + ABIs + address manifest that teach an AI agent running on [OnchainOS](https://web3.okx.com/) how to drive the xpad.lol protocol safely from natural language.
 
 ---
+## How it works
+Watch a [Demo](https://youtu.be/04low2nsJiA) to see skill in action.
+
+---
 
 ## What it does
 
